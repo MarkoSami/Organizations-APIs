@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: . 
+    ports:
+      - "8080:3000" 
+    depends_on:
+      - mongodb 
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/nestdb
+
+  
+  mongodb:
+    image: mongo:latest
+    container_name: nest_mongodb
+    ports:
+      - "27017:27017" 
+

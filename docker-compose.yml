@@ -8,10 +8,7 @@ services:
       - "8080:3000" 
     depends_on:
       - mongodb 
-    environment:
-      MONGODB_URI: mongodb://mongodb:27017/nestdb
-
-  
+            
   mongodb:
     image: mongo:latest
     container_name: nest_mongodb

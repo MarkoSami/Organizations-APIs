@@ -1,13 +1,13 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, Types } from "mongoose";
 import { User } from "src/users/schemas/user.schema";
+import { OrganizationMember, OrganizationMemberSchema } from "./organizationMember.schema"; // Adjust import as necessary
 
-
+// Define OrganizationMember as a sub-schema
 @Schema({
     timestamps: true
 })
 export class Organization extends Document {
-    
     @Prop({
         required: true,
     })
@@ -19,9 +19,10 @@ export class Organization extends Document {
     description: string;
 
     @Prop({
-        type: [{ type: Types.ObjectId, ref: 'User' }],
+        type: [OrganizationMemberSchema], // Use OrganizationMember as a sub-schema
     })
-    members: Types.ObjectId[] | User[];
+    members: OrganizationMember[];
 }
 
+export type OrganizationDocument = Organization & Document;
 export const OrganizationSchema = SchemaFactory.createForClass(Organization);

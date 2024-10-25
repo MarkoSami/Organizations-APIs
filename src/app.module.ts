@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -13,6 +14,10 @@ import { UsersModule } from './users/users.module';
       envFilePath: '.env',
     }),
     MongooseModule.forRoot(process.env.MONGODB_URI),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      global: true,
+    }),
     AuthModule,
     UsersModule,
   ],

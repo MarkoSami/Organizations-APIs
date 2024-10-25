@@ -1,17 +1,41 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { SignupDto } from './dtos/signup.dto';
 import { SigninDto } from './dtos/signin.dto';
+import { AuthService } from './auth.service';
+import { RefreshTokenDto } from './dtos/refreshToken.dto';
 
 @Controller('auth')
 export class AuthController {
 
+    /**
+     *
+     */
+    constructor(private readonly authService: AuthService) {
+        
+    }
+
     @Post('signup')
     async signup(@Body() signupDto: SignupDto) {
-        return 'signup';
+        const createdUser = await this.authService.signUp(signupDto);
+        if(!createdUser) {
+            return {
+                message: 'User not created'
+            };
+        }
+        return {
+            message: 'User created successfully',
+        };
     }
 
     @Post('signin')
     async signin(@Body() signinDto: SigninDto) {
-        return 'signin';
+        var response = await this.authService.signIn(signinDto);
+        return response;
+    }
+
+    @Post('refresh-token')
+    async refreshToken(@Body() refreshTokenDto: RefreshTokenDto) {
+        const response = await this.authService.refreshAccessToken(refreshTokenDto.refreshToken);
+        return response;
     }
 }

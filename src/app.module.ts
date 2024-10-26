@@ -7,6 +7,8 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { OrganizationsModule } from './organizations/organizations.module';
+import { CacheModule, CacheStore } from '@nestjs/cache-manager';
+import { redisStore } from 'cache-manager-redis-store';
 
 @Module({
   imports: [
@@ -18,6 +20,22 @@ import { OrganizationsModule } from './organizations/organizations.module';
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       global: true,
+    }),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      useFactory: async () => {
+        const store = await redisStore({
+          socket: {
+            host: process.env.REDIS_HOST,
+            port: parseInt(process.env.REDIS_PORT),
+          },
+        });
+
+        return {
+          store: store as unknown as CacheStore,
+          
+        };
+      },
     }),
     AuthModule,
     UsersModule,

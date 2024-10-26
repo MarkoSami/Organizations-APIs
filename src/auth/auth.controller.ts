@@ -35,7 +35,19 @@ export class AuthController {
 
     @Post('refresh-token')
     async refreshToken(@Body() refreshTokenDto: RefreshTokenDto) {
-        const response = await this.authService.refreshAccessToken(refreshTokenDto.refreshToken);
+        const response = await this.authService.refreshAccessToken(refreshTokenDto.refresh_token);
         return response;
     }
+
+    @Post('revoke-refresh-token')
+    async revokeRefreshToken(@Body() refreshTokenDto: RefreshTokenDto) {
+        await this.authService.revokeRefreshToken(refreshTokenDto.refresh_token);
+        return {
+            message: 'Refresh token revoked successfully'
+        };
+    }
+
+
 }
+
+    

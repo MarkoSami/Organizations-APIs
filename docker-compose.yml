@@ -7,7 +7,8 @@ services:
     ports:
       - "8080:3000" 
     depends_on:
-      - mongodb 
+      - mongodb
+      - redis
             
   mongodb:
     image: mongo:latest
@@ -15,3 +16,9 @@ services:
     ports:
       - "27017:27017" 
 
+  redis:
+    image: redis:latest
+    container_name: nest_redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]

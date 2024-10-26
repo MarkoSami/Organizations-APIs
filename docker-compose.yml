@@ -2,8 +2,7 @@ version: '3'
 
 services:
   app:
-    build:
-      context: . 
+    image: markosami/app:tagname   
     ports:
       - "8080:3000" 
     depends_on:
